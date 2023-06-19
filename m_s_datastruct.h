@@ -54,7 +54,8 @@ public:
   {
     clear();
     ::operator delete(m_data, m_capacity * sizeof(T));
-    }
+    // delete[] m_data;
+  }
   void push_back(const T &value)
   {
     if (m_size >= m_capacity)
@@ -80,8 +81,8 @@ public:
     {
       re_alloc(m_capacity + m_capacity / 2); // everytime increase half capacity
     }
-    // m_data[m_size] = T(std::forward<args>(Args)...);
-    new (&m_data[m_size]) T(std::forward<args>(Args)...);
+    m_data[m_size] = T(std::forward<args>(Args)...);
+    // new (&m_data[m_size]) T(std::forward<args>(Args)...);
     m_size++;
   }
   void pop_back()
