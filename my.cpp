@@ -22,13 +22,18 @@ public:
   {
     a = new int[5];
   }
-  vector3(const vector3 &other) = delete;
+  vector3(const vector3 &other)
+      : x(other.x), y(other.y), z(other.z)
+  {
+    a = other.a;
+    std::cout << "copy\n";
+  };
 
   vector3(const vector3 &&other)
       : x(other.x), y(other.y), z(other.z)
   {
     a = other.a;
-    std::cout << "copy\n";
+    std::cout << "move\n";
   };
 
   ~vector3()
@@ -36,7 +41,16 @@ public:
     delete[] a;
     std::cout << "destory\n";
   }
-  vector3 &operator=(const vector3 &other) = delete;
+  vector3 &operator=(const vector3 &other)
+  {
+    std::cout << "copy1\n";
+    x = other.x;
+    y = other.y;
+    z = other.z;
+    a = other.a;
+    // other.a = nullptr;
+    return *this;
+  }
 
   vector3 &operator=(const vector3 &&other)
   {
@@ -70,9 +84,9 @@ int main()
     std::cout << "===================" << std::endl;
   */
   vector<vector3> v;
-
-  v.emplcae_back(1.0f);
-  v.emplcae_back(2, 3, 4);
+  vector3 a(2, 3, 4);
+  v.push_back(1.0f);
+  v.push_back(a);
   v.emplcae_back(2, 3, 4);
   v.emplcae_back(2, 3, 4);
   v.emplcae_back(2, 3, 4);
