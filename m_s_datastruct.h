@@ -15,9 +15,78 @@ public:
   const T *data() const { return m_data; }
 };
 
+template <typename vector>
+class vectorIterator
+{
+public:
+  using ValueType = typename vector::ValueType;
+  using PointerType = ValueType *;
+  using ReferencrType = ValueType &;
+
+  vectorIterator(PointerType ptr)
+      : m_ptr(ptr) {}
+
+  vectorIterator &operator++()
+  {
+    m_ptr++;
+    return *this;
+  }
+
+  vectorIterator operator++(int)
+  {
+    vectorIterator iterator = *this;
+    ++(*this);
+    return iterator;
+  }
+
+  vectorIterator &operator--()
+  {
+    m_ptr--;
+    return *this;
+  }
+
+  vectorIterator operator--(int)
+  {
+    vectorIterator iterator = *this;
+    --(*this);
+    return iterator;
+  }
+
+  ReferencrType operator[](int index)
+  {
+    return *(m_ptr + index);
+  }
+
+  PointerType operator->()
+  {
+    return m_ptr;
+  }
+
+  ReferencrType operator*()
+  {
+    return *m_ptr;
+  }
+
+  bool operator==(const vectorIterator &other)
+  {
+    return m_ptr == other.m_ptr;
+  }
+  bool operator!=(const vectorIterator &other)
+  {
+    return !(*this == other);
+  }
+
+private:
+  PointerType m_ptr;
+};
+
 template <typename T>
 class vector
 {
+public:
+  using ValueType = T;
+  using Iterator = vectorIterator<vector<T>>;
+
 private:
   T *m_data = nullptr;
   size_t m_size = 0;
@@ -35,7 +104,7 @@ private:
     if (new_capacity < m_size)
       m_size = new_capacity;
     for (size_t i = 0; i < m_size; i++)
-      new_block[i] = std::move(m_data[i]);
+      new (&new_block[i]) T(std::move(m_data[i]));
     // 3.delete old memory
     // delete[] m_data;
     for (size_t i = 0; i < m_size; i++)
@@ -81,8 +150,8 @@ public:
     {
       re_alloc(m_capacity + m_capacity / 2); // everytime increase half capacity
     }
-    m_data[m_size] = T(std::forward<args>(Args)...);
-    // new (&m_data[m_size]) T(std::forward<args>(Args)...);
+    // m_data[m_size] = T(std::forward<args>(Args)...);
+    new (&m_data[m_size]) T(std::forward<args>(Args)...);
     m_size++;
   }
   void pop_back()
@@ -108,4 +177,8 @@ public:
   const T &operator[](size_t index) const { return m_data[index]; }
 
   size_t size() const { return m_size; }
+  T &begin() const { return m_data[0]; }
+  T &end() const { return m_data[m_size - 1]; }
+  vectorIterator<vector<T>> begin() { return Iterator(m_data); }
+  vectorIterator<vector<T>> end() { return Iterator(m_data + m_size); }
 };

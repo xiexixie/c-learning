@@ -1,6 +1,7 @@
 #include <iostream>
 #include "m_s_datastruct.h"
-
+// #include <vector>
+/*
 class vector3
 {
 private:
@@ -69,7 +70,7 @@ std::ostream &operator<<(std::ostream &stream, const vector3 &v)
 {
   stream << v.x << "," << v.y << "," << v.z;
   return stream;
-}
+}*/
 
 int main()
 {
@@ -83,25 +84,52 @@ int main()
     }
     std::cout << "===================" << std::endl;
   */
-  vector<vector3> v;
-  vector3 a(2, 3, 4);
-  v.push_back(1.0f);
-  v.push_back(a);
-  v.emplcae_back(2, 3, 4);
-  v.emplcae_back(2, 3, 4);
-  v.emplcae_back(2, 3, 4);
-  v.emplcae_back(2, 3, 4);
-  v.emplcae_back(2, 3, 4);
-  v.emplcae_back(5, 6, 7);
-  v.pop_back();
-  v.pop_back();
-  v.pop_back();
-  v.pop_back();
-  v.pop_back();
-  v.clear();
-  for (int i = 0; i < v.size(); i++)
-    std::cout << v[i] << std::endl;
+  /*
+   vector<vector3> v;
+   vector3 a(2, 3, 4);
+   v.push_back(1.0f);
+   v.push_back(a);
+   v.emplcae_back(2, 3, 4);
+   v.emplcae_back(2, 3, 4);
+   v.emplcae_back(2, 3, 4);
+   v.emplcae_back(2, 3, 4);
+   v.emplcae_back(2, 3, 4);
+   v.emplcae_back(5, 6, 7);
+   std::cout << v.begin() << std::endl;
+   std::cout << v.end() << std::endl;
+   v.pop_back();
+   v.pop_back();
+   v.pop_back();
+   v.pop_back();
+   v.pop_back();
+   v.clear();
+   for (int i = 0; i < v.size(); i++)
+     std::cout << v[i] << std::endl;
+   std::cout << "===================" << std::endl;
+
+   std::cout << v.size() << std::endl;
+   */
+  vector<std::string> values;
   std::cout << "===================" << std::endl;
 
-  std::cout << v.size() << std::endl;
+  values.emplcae_back("1");
+
+  values.emplcae_back("2");
+
+  values.emplcae_back("xiexixie");
+  values.emplcae_back("4");
+  values.emplcae_back("5");
+
+  for (int i = 0; i < values.size(); i++)
+    std::cout << values[i] << std::endl;
+  std::cout << "===================" << std::endl;
+
+  for (auto &value : values)
+    std::cout << value << std::endl;
+  std::cout << "===================" << std::endl;
+
+  for (vector<std::string>::Iterator it = values.begin(); it != values.end(); it++)
+    std::cout << *it << std::endl;
+
+  std::cin.get();
 }
